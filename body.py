@@ -2,14 +2,12 @@ import numpy as np
 import pygame as pg
 
 class Body():
-    def __init__(self, mass=0, rad=1, pos=np.array([0.0, 0.0]), ang=0):
-        self.mass = mass
+    def __init__(self, rad=1, pos=np.array([0.0, 0.0]), ang=0):
         self.rad = rad
         self.pos = pos
         self.ang = ang
 
     def print_info(self):
-        print(f"Mass: {self.mass}")
         print(f"Position: {self.pos}")
         print(f"Angle: {self.ang}")
 

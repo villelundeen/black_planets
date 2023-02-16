@@ -14,6 +14,7 @@ def main():
     laser.print_info()
     print(laser.get_pos())
     pg.init()
+    clk = pg.time.Clock()
     
     screen = pg.display.set_mode(cs.WINDOW_SIZE)
     pg.display.set_caption("Black Planets")
@@ -26,19 +27,35 @@ def main():
 
     running = True
     while running:
+        pg.time.delay(10)
         for event in pg.event.get():
-            if event.type == pg.KEYDOWN:
-                    laser.render(screen, cs.RED)
-
             if event.type == pg.QUIT:
                 running = False
 
-            laser.update(cs.DELTA_T)  
-            pg.display.update()
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT] or keys[pg.K_a]:
+            laser.stop_motion()
+            laser.set_vel(np.array([-1,0]))
+        if keys[pg.K_RIGHT] or keys[pg.K_d]:
+            laser.stop_motion()
+            laser.set_vel(np.array([1,0]))
+        if keys[pg.K_UP] or keys[pg.K_w]:
+            laser.stop_motion()
+            laser.set_vel(np.array([0,-1]))
+        if keys[pg.K_DOWN] or keys[pg.K_s]:
+            laser.stop_motion()
+            laser.set_vel(np.array([0,1]))
+
+        screen.fill(cs.BLACK)
+        laser.update_motion(cs.DELTA_T)
+        laser.render(screen, cs.RED)
+        pg.display.update()
+        clk.tick(cs.FPS)
 
     #main_dir = os.path.split(os.path.abspath(__file__))[0]
     #data_dir = os.path.join(main_dir, "data")
-
+    pg.quit()
+    quit()
 
 if __name__ == "__main__":
     main()
