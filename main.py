@@ -42,6 +42,7 @@ def main():
             keys = pg.key.get_pressed()
             if keys[pg.K_RETURN]:
                 moving = True
+                world.projectile.enable_motion()
                 world.projectile.set_vel(np.array([300,100]))
             if keys[pg.K_LEFT] or keys[pg.K_a]:
                 world.projectile.set_vel(np.array([-1,0]))
@@ -57,7 +58,7 @@ def main():
                         world.projectile.get_pos()[1] < -0.2*cs.WINDOW_H or \
                         world.projectile.get_pos()[1] > 1.2*cs.WINDOW_H
 
-        hit_planet = world.projectile.too_close_to_planet(world.planets)
+        hit_planet = world.projectile.too_close_to_planet(world.planets, min_dist=0)
 
         if outside_bounds or hit_planet:
             

@@ -1,8 +1,8 @@
 import numpy as np
-from body import Body
+from body import Massless_Body
 
 
-class Wormhole(Body):
+class Wormhole(Massless_Body):
     def __init__(self, rad=3, pos=np.array([0.0, 0.0]), ang=0):
         super().__init__(rad, pos, ang)
 

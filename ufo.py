@@ -1,14 +1,11 @@
 import numpy as np
-from body import Body
+from body import Nonstatic_Body
 import constants as cs
 
 
-class UFO(Body):
-    def __init__(self, mass=cs.UFO_MASS, rad=cs.UFO_RAD, pos=cs.PLAYER1_POS, ang=0):
-        super().__init__(mass, rad, pos, ang)
-        self.mass = mass
-        self.alive = True
-
+class UFO(Nonstatic_Body):
+    def __init__(self, mass=cs.UFO_MASS, rad=cs.UFO_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
+        super().__init__(mass, rad, pos, vel, acc, ang)
 
     def print_info(self):
         print(f"Mass: {self.mass}")
