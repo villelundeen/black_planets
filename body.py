@@ -7,6 +7,9 @@ class Body():
         self.pos = pos
         self.ang = ang
 
+    def __del__(self):
+        return
+
     def print_info(self):
         print(f"Position: {self.pos}")
         print(f"Angle: {self.ang}")
