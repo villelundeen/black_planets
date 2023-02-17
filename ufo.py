@@ -1,9 +1,10 @@
 import numpy as np
 from body import Body
+import constants as cs
 
 
-class Ufo(Body):
-    def __init__(self, mass=1000, rad=30, pos=np.array([0.0, 0.0]), ang=0):
+class UFO(Body):
+    def __init__(self, mass=cs.UFO_MASS, rad=cs.UFO_RAD, pos=cs.PLAYER1_POS, ang=0):
         super().__init__(mass, rad, pos, ang)
         self.mass = mass
         self.alive = True

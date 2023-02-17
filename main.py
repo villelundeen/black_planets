@@ -3,7 +3,6 @@ import pygame as pg
 from pygame.locals import *
 import numpy as np
 
-import projectile as pr
 import constants as cs
 import world as wd
 
@@ -15,7 +14,7 @@ def main():
     # Init game clock that is used to limit the FPS of the game
     clk = pg.time.Clock()
     # Create the World, i.e., planets, wormholes, and ufos.
-    world = wd.World(n_planet=1,n_wormhole=0)
+    world = wd.World(n_planet=5,n_wormhole=0)
 
     world.projectile.stop_motion()
     screen = pg.display.set_mode(cs.WINDOW_SIZE)
@@ -24,6 +23,10 @@ def main():
     pg.display.update()
     
     world.projectile.render(screen, cs.BLUE)
+    world.ufo1.render(screen, cs.WHITE)
+    world.ufo2.render(screen, cs.WHITE)
+    for planet in world.planets:
+        planet.render(screen, cs.GREEN)
 
     pg.display.update()
 
@@ -31,7 +34,6 @@ def main():
     moving = False
     inside_bounds = True
     while running:
-        #pg.time.delay(10)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
@@ -40,7 +42,7 @@ def main():
             keys = pg.key.get_pressed()
             if keys[pg.K_RETURN]:
                 moving = True
-                world.projectile.set_vel(np.array([1.5,-0.5]))
+                world.projectile.set_vel(np.array([300,100]))
             if keys[pg.K_LEFT] or keys[pg.K_a]:
                 world.projectile.set_vel(np.array([-1,0]))
             if keys[pg.K_RIGHT] or keys[pg.K_d]:
@@ -49,25 +51,46 @@ def main():
                 world.projectile.set_vel(np.array([0,-1]))
             if keys[pg.K_DOWN] or keys[pg.K_s]:
                 world.projectile.set_vel(np.array([0,1]))
-        
-        if world.projectile.get_pos()[0] < -0.2*cs.WINDOW_W or world.projectile.get_pos()[0] > 1.2*cs.WINDOW_W or world.projectile.get_pos()[1] < -0.2*cs.WINDOW_H or world.projectile.get_pos()[1] > 1.2*cs.WINDOW_H:
+
+        outside_bounds = world.projectile.get_pos()[0] < -0.2*cs.WINDOW_W or \
+                        world.projectile.get_pos()[0] > 1.2*cs.WINDOW_W or \
+                        world.projectile.get_pos()[1] < -0.2*cs.WINDOW_H or \
+                        world.projectile.get_pos()[1] > 1.2*cs.WINDOW_H
+
+        hit_planet = world.projectile.too_close_to_planet(world.planets)
+
+        if outside_bounds or hit_planet:
+            
             world.projectile.stop_motion()
             moving = False
-            world.projectile.set_pos(np.array([100,100]))
-            screen.fill(cs.BLACK)
+            world.projectile.set_pos(cs.PLAYER1_POS)
+            #screen.fill(cs.BLACK)
             world.projectile.update_motion(cs.DELTA_T, world.planets)
             world.projectile.render(screen, cs.RED)
+            world.ufo1.render(screen, cs.WHITE)
+            world.ufo2.render(screen, cs.WHITE)
             pg.display.update()
             clk.tick(cs.FPS)
+        
         if moving:
             screen.fill(cs.BLACK)
             world.projectile.update_motion(cs.DELTA_T, world.planets)
             world.projectile.render(screen, cs.RED)
+            world.ufo1.render(screen, cs.WHITE)
+            world.ufo2.render(screen, cs.WHITE)
+            for planet in world.planets:
+                planet.render(screen, cs.GREEN)
             pg.display.update()
             clk.tick(cs.FPS)
 
-    #main_dir = os.path.split(os.path.abspath(__file__))[0]
-    #data_dir = os.path.join(main_dir, "data")
+        else:
+            screen.fill(cs.BLACK)
+            world.projectile.render(screen, cs.RED)
+            for planet in world.planets:
+                planet.render(screen, cs.GREEN)
+            pg.display.update()
+            clk.tick(cs.FPS)
+
     pg.quit()
     quit()
 
