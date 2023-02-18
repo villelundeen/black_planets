@@ -31,8 +31,9 @@ def main():
     pg.display.update()
 
     running = True
-    moving = False
+    shot_moving = False
     inside_bounds = True
+    last_tick = 0
     while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -41,17 +42,47 @@ def main():
         if inside_bounds:
             keys = pg.key.get_pressed()
             if keys[pg.K_RETURN]:
-                moving = True
-                world.projectile.enable_motion()
-                world.projectile.set_vel(np.array([300,100]))
+                if shot_moving == False:
+                    if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                        last_tick = pg.time.get_ticks()
+
+                        print(f"Shot_angle in degrees: {world.ufo1.ang/np.pi*180}")
+                        print(f"Shot_angle in radians: {world.ufo1.ang}")
+                        print(f"Angular resolution: {cs.UFO_ANGULAR_RESOLUTION}")
+
+                        shot_moving = True
+                        world.projectile.enable_motion()
+                        shot_vector = world.ufo1.get_shot_direction() * world.ufo1.get_shot_power()
+                        world.projectile.set_vel(shot_vector)
             if keys[pg.K_LEFT] or keys[pg.K_a]:
-                world.projectile.set_vel(np.array([-1,0]))
+                if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                    last_tick = pg.time.get_ticks()
+                    if shot_moving == False:
+                        world.ufo1.enable_rotation()
+                    world.ufo1.rotate_positive()
+                    world.ufo1.disable_rotation()
             if keys[pg.K_RIGHT] or keys[pg.K_d]:
-                world.projectile.set_vel(np.array([1,0]))
+                if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                    last_tick = pg.time.get_ticks()
+                    if shot_moving == False:
+                        world.ufo1.enable_rotation()
+                    world.ufo1.rotate_negative()
+                    world.ufo1.disable_rotation()
             if keys[pg.K_UP] or keys[pg.K_w]:
-                world.projectile.set_vel(np.array([0,-1]))
+                if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                    last_tick = pg.time.get_ticks()
+                    if shot_moving == False:
+                        world.ufo1.enable_power_tuning()
+                    world.ufo1.increase_shot_power()
+                    world.ufo1.disable_power_tuning()
             if keys[pg.K_DOWN] or keys[pg.K_s]:
-                world.projectile.set_vel(np.array([0,1]))
+                if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                    last_tick = pg.time.get_ticks()
+                    if shot_moving == False:
+                        world.ufo1.enable_power_tuning()
+                    world.ufo1.decrease_shot_power()
+                    world.ufo1.disable_power_tuning()
+
 
         outside_bounds = world.projectile.get_pos()[0] < -0.2*cs.WINDOW_W or \
                         world.projectile.get_pos()[0] > 1.2*cs.WINDOW_W or \
@@ -63,7 +94,7 @@ def main():
         if outside_bounds or hit_planet:
             
             world.projectile.stop_motion()
-            moving = False
+            shot_moving = False
             world.projectile.set_pos(cs.PLAYER1_POS)
             #screen.fill(cs.BLACK)
             world.projectile.update_motion(cs.DELTA_T, world.planets)
@@ -73,7 +104,7 @@ def main():
             pg.display.update()
             clk.tick(cs.FPS)
         
-        if moving:
+        if shot_moving:
             screen.fill(cs.BLACK)
             world.projectile.update_motion(cs.DELTA_T, world.planets)
             world.projectile.render(screen, cs.RED)

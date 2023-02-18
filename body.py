@@ -24,6 +24,9 @@ class Body():
     def get_rad(self):
         return self.rad
 
+    def get_ang(self):
+        return self.ang
+
     def too_close_to_planet(self, planets, min_dist) -> bool:
         for planet in planets:
             pos = planet.get_pos()
@@ -68,6 +71,8 @@ class Nonstatic_Body(Massive_Body):
         self.vel = vel
         self.acc = acc
         self.motion_enabled = False
+        self.rotation_enabled = False
+        self.power_tuning_enabled = False
 
     def get_acc(self, planets):
         acc = np.array([0.0, 0.0])
@@ -99,9 +104,22 @@ class Nonstatic_Body(Massive_Body):
     def disable_motion(self):
         self.motion_enabled = False
 
+    def enable_rotation(self):
+        self.rotation_enabled = True
+
+    def disable_rotation(self):
+        self.rotation_enabled = False
+
+    def enable_power_tuning(self):
+        self.power_tuning_enabled = True
+
+    def disable_power_tuning(self):
+        self.power_tuning_enabled = False
+
     def update_motion(self, dt, planets):
         if self.motion_enabled == True:
             self.pos = self.pos + self.vel*dt + 0.5*self.acc*dt*dt
             new_acc = self.get_acc(planets)
             self.vel = self.vel + 0.5*(self.acc + new_acc)*dt
             self.acc = new_acc
+
