@@ -1,12 +1,21 @@
 import numpy as np
 from body import Nonstatic_Body
 import constants as cs
-
+from pygame import image as im
+from pygame import transform as tr
 
 class UFO(Nonstatic_Body):
-    def __init__(self, mass=cs.UFO_MASS, rad=cs.UFO_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
+    def __init__(self, mass=cs.UFO_MASS, \
+                    rad=cs.UFO_RAD, \
+                        pos=cs.PLAYER1_POS - np.array([-cs.UFO_RAD, -cs.UFO_RAD]), \
+                            vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), \
+                                ang=0, \
+                                    lives=3):
         super().__init__(mass, rad, pos, vel, acc, ang)
         self.shot_power = (cs.MIN_SHOT_POWER + cs.MAX_SHOT_POWER)/2
+        self.img = im.load("./figs/ufo.png")
+        self.img = tr.scale(self.img, (2*cs.UFO_RAD,2*cs.UFO_RAD))
+        self.lives = lives
 
     def print_info(self):
         print(f"Mass: {self.mass}")
@@ -14,6 +23,9 @@ class UFO(Nonstatic_Body):
         print(f"Position: {self.pos}")
         print(f"Angle: {self.ang}")
         print(f"Shot power: {self.shot_power}")
+
+    def render(self, screen):
+        screen.blit(self.img, tuple(self.pos - np.array([self.rad, self.rad])))
 
     def get_mass(self):
         return self.mass
@@ -43,5 +55,11 @@ class UFO(Nonstatic_Body):
         ux = np.cos(self.ang)
         uy = -np.sin(self.ang)
         return np.array([ux,uy])
+
+    def get_life_count(self):
+        return self.lives
+
+    def lose_life(self):
+        self.lives -= 1
 
     

@@ -17,3 +17,10 @@ class Projectile(Nonstatic_Body):
         print(f"Acceleration: {self.acc}")
         print(f"Angle: {self.ang}")
 
+    def hit_ufo(self, ufo):
+        pos = ufo.get_pos()
+        rad = ufo.get_rad()
+        dist = utils.get_distance(pos, self.pos)
+        if dist < self.rad + rad:
+            return True
+        return False

@@ -11,9 +11,9 @@ class World():
     def __init__(self, n_planet, n_wormhole):
         self.planets = []
         self.wormholes = []
+        self.projectile = None
         self.ufo1 = None
         self.ufo2 = None
-        self.projectile = None
 
         self.generate_planets(n_planet)
         self.generate_wormholes(n_wormhole)
@@ -87,9 +87,10 @@ class World():
 
     def generate_ufos(self):
         self.ufo1 = ufo.UFO(pos=cs.PLAYER1_POS)
-        self.ufo2 = ufo.UFO(pos=cs.PLAYER2_POS)
+        self.ufo2 = ufo.UFO(pos=cs.PLAYER2_POS, ang=np.pi)
 
     
-    def generate_projectile(self):
-        self.projectile = pr.Projectile(pos=cs.PLAYER1_POS,vel=np.array([1, 0.0]))
+    def generate_projectiles(self):
+        self.projectile = pr.Projectile(pos=cs.PLAYER1_POS)
+
 

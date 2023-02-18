@@ -4,7 +4,6 @@ import constants as cs
 import utils
 
 
-
 class Body():
     def __init__(self, rad=1, pos=np.array([0.0, 0.0]), ang=0):
         self.rad = rad
@@ -31,15 +30,16 @@ class Body():
         for planet in planets:
             pos = planet.get_pos()
             rad = planet.get_rad()
-            dist = np.sqrt(((pos[0] - self.pos[0]) * (pos[0] - self.pos[0])) + ((pos[1] - self.pos[1]) * (pos[1] - self.pos[1])))
+            dist = utils.get_distance(pos, self.pos)
             if dist <= self.rad + rad + min_dist:
                 return True
+        return False
 
     def too_close_to_wormhole(self, wormholes, min_dist) -> bool:
         for wormhole in wormholes:
             pos = wormhole.get_pos()
             rad = wormhole.get_rad()
-            dist = np.sqrt(((pos[0] - self.pos[0]) * (pos[0] - self.pos[0])) + ((pos[1] - self.pos[1]) * (pos[1] - self.pos[1])))
+            dist = utils.get_distance(pos, self.pos)
             if dist <= self.rad + rad + min_dist:
                 return True
         return False
@@ -93,6 +93,9 @@ class Nonstatic_Body(Massive_Body):
 
     def set_acc(self, acc=np.array([0.0, 0.0])):
         self.acc = acc
+
+    def set_ang(self, new_ang):
+        self.ang = new_ang
 
     def stop_motion(self):
         self.vel = np.array([0,0])

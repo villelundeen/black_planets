@@ -1,7 +1,17 @@
-import numpy as np
+import constants as cs
+from pygame import image as im
+from pygame import transform as tr
+from os import listdir
+ 
 
+class Graphics_Stock():
+    def __init__(self):
+        self.planet_imgs = []
+        for img_name in listdir("./figs"):
+            if (img_name.endswith("planet.png")):
+                img = im.load("./figs/" + img_name)
+                self.planet_imgs.append(img)
+        self.ufo_imgs = []
+        self.projectile_imgs = []
 
-class Form():
-    def __init__(self, pos=np.array([0.0, 0.0]), ang=0):
-        self.pos = pos
-        self.ang = ang
+graphics_stock = Graphics_Stock()
