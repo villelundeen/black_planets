@@ -12,7 +12,7 @@ def main():
 
     pg.init()
     clk = pg.time.Clock()
-    wd = world.World(n_planet=5,n_wormhole=0)
+    wd = world.World(n_planet=5,n_wormhole_pairs=1)
 
     wd.projectile0.stop_motion()
     screen = pg.display.set_mode(cs.WINDOW_SIZE)
@@ -24,6 +24,9 @@ def main():
     wd.ufo1.render(screen)
     for planet in wd.planets:
         planet.render(screen)
+    for wormhole_pair in wd.wormholes:
+        wormhole_pair[0].render(screen)
+        wormhole_pair[1].render(screen)
 
     pg.display.update()
 
@@ -32,6 +35,7 @@ def main():
     inside_bounds = True
     last_tick = 0
     last_shot_tick = 0
+    last_teleport_tick = 0
     player_idx = 0
     while running:
         for event in pg.event.get():
@@ -83,6 +87,7 @@ def main():
                         wd.projectiles[player_idx].get_pos()[1] < -0.2*cs.WINDOW_H or \
                         wd.projectiles[player_idx].get_pos()[1] > 1.2*cs.WINDOW_H
         hit_planet = wd.projectiles[player_idx].too_close_to_planet(wd.planets, min_dist=0)
+        #hit_wormhole = wd.projectiles[player_idx].too_close_to_wormhole(wd.wormholes, min_dist=0)
         if (pg.time.get_ticks() - last_shot_tick > cs.HIT_ACTIVATION_DELAY) and shot_moving:
             hit_ufo0 = wd.projectiles[player_idx].hit_ufo(wd.ufo0)
             hit_ufo1 = wd.projectiles[player_idx].hit_ufo(wd.ufo1)
@@ -106,9 +111,6 @@ def main():
             wd.projectiles[player_idx].stop_motion()
             shot_moving = False
 
-            #wd.projectile0.set_pos(cs.PLAYER1_POS)
-            #wd.projectile1.set_pos(cs.PLAYER2_POS)
-
             if player_idx:
                 wd.projectiles[player_idx].set_pos(cs.PLAYER2_POS)
             else:
@@ -126,6 +128,14 @@ def main():
         
         elif shot_moving:
             screen.fill(cs.BLACK)
+            for wormhole_pair in wd.wormholes:
+                wormhole_pair[0].render(screen)
+                wormhole_pair[1].render(screen)
+            if (pg.time.get_ticks() - last_teleport_tick > cs.TELEPORTATION_DELAY):
+                teleported = wd.projectiles[player_idx].teleport_if_in_wormhole(wd.wormholes)
+                if teleported:
+                    last_teleport_tick = pg.time.get_ticks()
+                    
             wd.projectiles[player_idx].update_motion(cs.DELTA_T, wd.planets)
             wd.projectiles[player_idx].render(screen, cs.RED)
             wd.ufo0.render(screen)
@@ -136,6 +146,9 @@ def main():
 
         else:
             screen.fill(cs.BLACK)
+            for wormhole_pair in wd.wormholes:
+                wormhole_pair[0].render(screen)
+                wormhole_pair[1].render(screen)
             wd.projectiles[player_idx].render(screen, cs.RED)
             wd.ufo0.render(screen)
             wd.ufo1.render(screen)

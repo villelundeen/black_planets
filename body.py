@@ -36,11 +36,16 @@ class Body():
         return False
 
     def too_close_to_wormhole(self, wormholes, min_dist) -> bool:
-        for wormhole in wormholes:
-            pos = wormhole.get_pos()
-            rad = wormhole.get_rad()
-            dist = utils.get_distance(pos, self.pos)
-            if dist <= self.rad + rad + min_dist:
+        for wormhole_pair in wormholes:
+            pos0 = wormhole_pair[0].get_pos()
+            rad0 = wormhole_pair[0].get_rad()
+            dist0 = utils.get_distance(pos0, self.pos)
+            pos1 = wormhole_pair[1].get_pos()
+            rad1 = wormhole_pair[1].get_rad()
+            dist1 = utils.get_distance(pos1, self.pos)
+            if dist0 <= self.rad + cs.WORMHOLE_OUTER_RAD + min_dist:
+                return True
+            elif dist1 <= self.rad + cs.WORMHOLE_OUTER_RAD + min_dist:
                 return True
         return False
 
@@ -97,7 +102,7 @@ class Moving_Body(Rotating_Body):
         for planet in planets:
             mass = planet.get_mass()
             pos = planet.get_pos()
-            dist = utils.get_distance(pos, self.pos) #np.sqrt(((pos[0] - self.pos[0]) * (pos[0] - self.pos[0])) + ((pos[1] - self.pos[1]) * (pos[1] - self.pos[1])))   
+            dist = utils.get_distance(pos, self.pos)
             u_vec = (pos - self.pos)/dist
             grav = u_vec * cs.G_CONST*(mass*self.mass)/(dist*dist)
             acc += grav/self.mass
@@ -135,3 +140,18 @@ class Moving_Body(Rotating_Body):
             self.vel = self.vel + 0.5*(self.acc + new_acc)*dt
             self.acc = new_acc
 
+    def teleport_if_in_wormhole(self, wormholes) -> bool:
+        for wormhole_pair in wormholes:
+            pos0 = wormhole_pair[0].get_pos()
+            rad0 = wormhole_pair[0].get_rad()
+            dist0 = utils.get_distance(pos0, self.pos)
+            pos1 = wormhole_pair[1].get_pos()
+            rad1 = wormhole_pair[1].get_rad()
+            dist1 = utils.get_distance(pos1, self.pos)
+            if dist0 <= self.rad + rad0:
+                self.set_pos(wormhole_pair[1].get_pos())
+                return True
+            elif dist1 <= self.rad + rad1:
+                self.set_pos(wormhole_pair[0].get_pos())
+                return True
+        return False

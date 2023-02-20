@@ -6,7 +6,7 @@ import utils
 
 
 class Projectile(Moving_Body):
-    def __init__(self, mass=cs.PROJECTILE_RAD, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
+    def __init__(self, mass=cs.PROJECTILE_MASS, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
         super().__init__(mass, rad, pos, vel, acc, ang)
 
     def print_info(self):
