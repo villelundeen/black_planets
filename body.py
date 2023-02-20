@@ -63,15 +63,33 @@ class Massive_Body(Body):
     def get_mass(self):
         return self.mass
 
-    
 
-class Nonstatic_Body(Massive_Body):
+
+class Rotating_Body(Massive_Body):
+    def __init__(self, mass=cs.PROJECTILE_RAD, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
+        super().__init__(mass, rad, pos, ang)
+        self.rotation_enabled = False
+    
+    def set_ang(self, new_ang):
+        self.ang = new_ang
+
+    def enable_rotation(self):
+        self.rotation_enabled = True
+
+    def disable_rotation(self):
+        self.rotation_enabled = False
+
+    def update_rotation(self, angle_increment):
+        self.ang += angle_increment
+
+
+
+class Moving_Body(Rotating_Body):
     def __init__(self, mass=cs.PROJECTILE_RAD, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
         super().__init__(mass, rad, pos, ang)
         self.vel = vel
         self.acc = acc
         self.motion_enabled = False
-        self.rotation_enabled = False
         self.power_tuning_enabled = False
 
     def get_acc(self, planets):
@@ -94,9 +112,6 @@ class Nonstatic_Body(Massive_Body):
     def set_acc(self, acc=np.array([0.0, 0.0])):
         self.acc = acc
 
-    def set_ang(self, new_ang):
-        self.ang = new_ang
-
     def stop_motion(self):
         self.vel = np.array([0,0])
         self.acc = np.array([0,0])
@@ -106,12 +121,6 @@ class Nonstatic_Body(Massive_Body):
 
     def disable_motion(self):
         self.motion_enabled = False
-
-    def enable_rotation(self):
-        self.rotation_enabled = True
-
-    def disable_rotation(self):
-        self.rotation_enabled = False
 
     def enable_power_tuning(self):
         self.power_tuning_enabled = True

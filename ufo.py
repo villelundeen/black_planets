@@ -1,10 +1,10 @@
 import numpy as np
-from body import Nonstatic_Body
+from body import Moving_Body
 import constants as cs
 from pygame import image as im
 from pygame import transform as tr
 
-class UFO(Nonstatic_Body):
+class UFO(Moving_Body):
     def __init__(self, mass=cs.UFO_MASS, \
                     rad=cs.UFO_RAD, \
                         pos=cs.PLAYER1_POS - np.array([-cs.UFO_RAD, -cs.UFO_RAD]), \
