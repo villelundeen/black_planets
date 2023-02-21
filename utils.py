@@ -1,6 +1,7 @@
 import numpy as np
 import constants as cs
 import random as rand
+import pygame as pg
 
 
 def get_distance(point1, point2) -> float:
@@ -24,3 +25,13 @@ def get_random_unit_vector() -> np.ndarray:
 
 def get_rotation_matrix(ang):
     return np.array([[np.cos(ang), -np.sin(ang)],[np.sin(ang), np.cos(ang)]])
+
+
+# Text Renderer
+def text_format(message, textFont, textSize, textColor):
+    newFont=pg.font.Font(textFont, textSize)
+    newText=newFont.render(message, 0, textColor)
+ 
+    return newText
+
+

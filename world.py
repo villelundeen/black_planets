@@ -81,7 +81,6 @@ class World():
             print("Too many tries required to create all the planets!")
 
     def generate_wormhole_pairs(self, n_wormhole_pairs):
-        n_wormhole = 2 * n_wormhole_pairs
         wormhole_idx = 0
         current_pair = [None, None]
         for wormhole_pair in self.wormholes:
