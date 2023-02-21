@@ -128,7 +128,7 @@ def main():
         
         elif shot_moving:
             screen.fill(cs.BLACK)
-            for wormhole_pair in wd.wormholes:
+            for wormhole_pair in wd.wormholes: 
                 wormhole_pair[0].render(screen)
                 wormhole_pair[1].render(screen)
             if (pg.time.get_ticks() - last_teleport_tick > cs.TELEPORTATION_DELAY):

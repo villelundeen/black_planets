@@ -21,3 +21,6 @@ def get_random_unit_vector() -> np.ndarray:
     uy = signy*np.sqrt(uy2)
 
     return np.array([ux, uy])
+
+def get_rotation_matrix(ang):
+    return np.array([[np.cos(ang), -np.sin(ang)],[np.sin(ang), np.cos(ang)]])

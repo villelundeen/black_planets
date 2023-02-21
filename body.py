@@ -2,6 +2,7 @@ import numpy as np
 import pygame as pg
 import constants as cs
 import utils
+import random as rand
 
 
 class Body():
@@ -71,7 +72,7 @@ class Massive_Body(Body):
 
 
 class Rotating_Body(Massive_Body):
-    def __init__(self, mass=cs.PROJECTILE_RAD, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, ang=0):
+    def __init__(self, mass=1000, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, ang=0):
         super().__init__(mass, rad, pos, ang)
         self.rotation_enabled = False
     
@@ -114,6 +115,9 @@ class Moving_Body(Rotating_Body):
     def set_vel(self, vel=np.array([0.0, 0.0])):
         self.vel = vel
 
+    def get_vel(self):
+        return self.vel
+
     def set_acc(self, acc=np.array([0.0, 0.0])):
         self.acc = acc
 
@@ -150,8 +154,10 @@ class Moving_Body(Rotating_Body):
             dist1 = utils.get_distance(pos1, self.pos)
             if dist0 <= self.rad + rad0:
                 self.set_pos(wormhole_pair[1].get_pos())
+                self.set_vel(np.dot(wormhole_pair[1].rotation_matrix, self.get_vel()))
                 return True
             elif dist1 <= self.rad + rad1:
                 self.set_pos(wormhole_pair[0].get_pos())
+                self.set_vel(np.dot(wormhole_pair[0].rotation_matrix, self.get_vel()))
                 return True
         return False
