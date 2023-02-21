@@ -71,10 +71,9 @@ class Massive_Body(Body):
 
 
 
-class Rotating_Body(Massive_Body):
-    def __init__(self, mass=1000, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, ang=0):
-        super().__init__(mass, rad, pos, ang)
-        self.rotation_enabled = False
+class Rotating_Body(Massless_Body):
+    def __init__(self, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, ang=0):
+        super().__init__(rad, pos, ang)
     
     def set_ang(self, new_ang):
         self.ang = new_ang
@@ -90,8 +89,8 @@ class Rotating_Body(Massive_Body):
 
 
 
-class Moving_Body(Rotating_Body):
-    def __init__(self, mass=cs.PROJECTILE_RAD, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
+class Moving_Body(Massive_Body, Rotating_Body):
+    def __init__(self, mass=1000, rad=cs.PROJECTILE_RAD, pos=cs.PLAYER1_POS, vel=np.array([0.0, 0.0]), acc=np.array([0.0, 0.0]), ang=0):
         super().__init__(mass, rad, pos, ang)
         self.vel = vel
         self.acc = acc

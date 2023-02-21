@@ -8,8 +8,8 @@ import random as rand
 
 
 class Wormhole(Rotating_Body):
-    def __init__(self, mass=1000, rad=cs.WORMHOLE_INNER_RAD, pos=np.array([0.0, 0.0]), ang=0):
-        super().__init__(mass, rad, pos, ang)
+    def __init__(self, rad=cs.WORMHOLE_INNER_RAD, pos=np.array([0.0, 0.0]), ang=0):
+        super().__init__(rad, pos, ang)
         self.img = im.load("./figs/wormhole.png")
         self.img = tr.scale(self.img, (2*cs.WORMHOLE_OUTER_RAD,2*cs.WORMHOLE_OUTER_RAD))
         self.img_ang = 0        # degrees

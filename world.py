@@ -125,8 +125,7 @@ class World():
             if success:
                 wormhole_idx = (wormhole_idx + 1) % 2
                 wormhole_pos.append((np.array([rand_x, rand_y])))
-                wormhole_mass = (4/3*np.pi*irad*irad*irad) * cs.WORMHOLE_DENSITY
-                current_pair[wormhole_idx] = wh.Wormhole(mass=wormhole_mass, rad=irad, pos=np.array([rand_x,rand_y]))
+                current_pair[wormhole_idx] = wh.Wormhole(rad=irad, pos=np.array([rand_x,rand_y]))
                 if wormhole_idx == 0:
                     self.wormholes.append(current_pair.copy()) 
                     current_pair[0] = None
