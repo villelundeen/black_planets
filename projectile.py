@@ -24,3 +24,4 @@ class Projectile(Moving_Body):
         if dist < self.rad + rad:
             return True
         return False
+    

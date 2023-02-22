@@ -1,17 +1,27 @@
 import numpy as np
-import pygame as pg
+from pygame import mixer as mx
+
 
 # Some colors
 WHITE =     (255, 255, 255)
 BLUE =      (  0,   0, 255)
 GREEN =     (  0, 255,   0)
+DARK_BLUE =     (  0, 0,   50)
 RED =       (255,   0,   0)
 BLACK =     (0,   0,   0)
-GREY =     (100,   100,   100)
+GREY =     (150,   150,   150)
 TEXTCOLOR = (  0,   0,  0)
 
 # Game Fonts
-FONT = pg.font.get_default_font()
+FONT_PATH = "./fonts/Freedom-10eM.ttf"  # Font credit to HXDes. Downloaded from: https://www.fontspace.com/category/ttf
+#FONT_PATH = "./fonts/Nasa21-l23X.ttf"
+
+# Game sound effects
+LASER_SOUND_PATH = "./sounds/laser_shot.wav"
+UFO_HIT_SOUND_PATH = "./sounds/ufo_hit.wav"
+TELEPORT_SOUND_PATH = "./sounds/teleport.wav"
+PLANET_HIT_SOUND_PATH = "./sounds/planet_hit.wav"
+OOB_SOUND_PATH = "./sounds/out_of_bounds.wav"
 
 # General game parameters
 DELTA_T = 0.016
@@ -25,7 +35,7 @@ MIN_KEY_PRESS_DELAY = 250
 HIT_ACTIVATION_DELAY = 250
 
 # UFO parameters
-UFO_RAD = 20
+UFO_RAD = 25
 UFO_MASS = 30
 UFO_ANGULAR_RESOLUTION = 5*np.pi/180
 MIN_SHOT_POWER = 100

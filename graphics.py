@@ -1,4 +1,3 @@
-import constants as cs
 from pygame import image as im
 from pygame import transform as tr
 from os import listdir

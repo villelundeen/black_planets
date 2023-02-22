@@ -1,8 +1,9 @@
 import numpy as np
 import pygame as pg
-import constants as cs
 import utils
 import random as rand
+from pygame import mixer as mx
+import constants as cs
 
 
 class Body():
@@ -136,12 +137,24 @@ class Moving_Body(Massive_Body, Rotating_Body):
     def disable_power_tuning(self):
         self.power_tuning_enabled = False
 
+
+
+
+
+
+
     def update_motion(self, dt, planets):
         if self.motion_enabled == True:
             self.pos = self.pos + self.vel*dt + 0.5*self.acc*dt*dt
             new_acc = self.get_acc(planets)
             self.vel = self.vel + 0.5*(self.acc + new_acc)*dt
             self.acc = new_acc
+
+
+
+
+
+
 
     def teleport_if_in_wormhole(self, wormholes) -> bool:
         for wormhole_pair in wormholes:
@@ -154,9 +167,11 @@ class Moving_Body(Massive_Body, Rotating_Body):
             if dist0 <= self.rad + rad0:
                 self.set_pos(wormhole_pair[1].get_pos())
                 self.set_vel(np.dot(wormhole_pair[1].rotation_matrix, self.get_vel()))
+                mx.Sound(cs.TELEPORT_SOUND_PATH).play()
                 return True
             elif dist1 <= self.rad + rad1:
                 self.set_pos(wormhole_pair[0].get_pos())
                 self.set_vel(np.dot(wormhole_pair[0].rotation_matrix, self.get_vel()))
+                mx.Sound(cs.TELEPORT_SOUND_PATH).play()
                 return True
         return False
