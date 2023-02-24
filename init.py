@@ -1,6 +1,7 @@
 import pygame as pg
 import constants as cs
 from pygame import mixer as mx
+from audio import audio as au
 
 
 def init_bp():
@@ -8,8 +9,7 @@ def init_bp():
     print("Welcome to Black Planets Construction Site!")
     pg.init()
     # Game sound effects
-    UFO_HIT_SOUND= mx.Sound("./sounds/ufo_hit_explosion.wav")
-    TELEPORT_SOUND= mx.Sound("./sounds/teleport.wav")
+    au.create_sounds()
     screen = pg.display.set_mode(cs.WINDOW_SIZE)
     clk = pg.time.Clock()
     return screen, clk

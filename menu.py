@@ -2,6 +2,8 @@ import pygame as pg
 import constants as cs
 import utils
 from enum import Enum
+from audio import audio as au
+from graphics import graphics as gr
 
 class Menu():
     def __init__(self, screen, clk):
@@ -25,9 +27,11 @@ class Main_Menu(Menu):
         while self.in_menu:
             for event in pg.event.get():
                 if event.type==pg.QUIT or event.type==pg.K_ESCAPE:
+                    au.sfx["menu_select"].play()
                     pg.quit()
                     quit()
                 if event.type==pg.KEYDOWN:
+                    au.sfx["menu_select"].play()
                     if event.key==pg.K_UP:
                         if self.selected > 0:
                             self.selected = self.selected - 1
@@ -36,7 +40,12 @@ class Main_Menu(Menu):
                             self.selected = self.selected + 1
                     if event.key==pg.K_RETURN:
                         if self.selected==self.buttons.START.value:
+                            au.sfx["start_level"].play()
+                            self.screen.fill(cs.BLACK)
+                            pg.display.update()
+                            pg.time.delay(1750)
                             self.game.game()
+
                         if self.selected==self.buttons.OPTIONS.value:
                             self.options_menu.options_menu(self)
                         if self.selected==self.buttons.QUIT.value:
@@ -45,23 +54,23 @@ class Main_Menu(Menu):
         
             # Main Menu UI
             self.screen.fill(cs.BLACK)
-            title_black=utils.text_format("BLACK", cs.FONT_PATH, 120, cs.GREEN)
-            title_planet=utils.text_format("PLANETS", cs.FONT_PATH, 120, cs.GREEN)
+            title_black=utils.text_format("BLACK", gr.font, 120, cs.GREEN)
+            title_planet=utils.text_format("PLANETS", gr.font, 120, cs.GREEN)
 
             if self.selected==self.buttons.START.value:
-                text_start=utils.text_format("START", cs.FONT_PATH, 75, cs.GREEN)
+                text_start=utils.text_format("START", gr.font, 75, cs.GREEN)
             else:
-                text_start = utils.text_format("START", cs.FONT_PATH, 75, cs.GREY)
+                text_start = utils.text_format("START", gr.font, 75, cs.GREY)
 
             if self.selected==self.buttons.OPTIONS.value:
-                text_options=utils.text_format("OPTIONS", cs.FONT_PATH, 75, cs.GREEN)
+                text_options=utils.text_format("OPTIONS", gr.font, 75, cs.GREEN)
             else:
-                text_options = utils.text_format("OPTIONS", cs.FONT_PATH, 75, cs.GREY)
+                text_options = utils.text_format("OPTIONS", gr.font, 75, cs.GREY)
 
             if self.selected==self.buttons.QUIT.value:
-                text_quit=utils.text_format("QUIT", cs.FONT_PATH, 75, cs.GREEN)
+                text_quit=utils.text_format("QUIT", gr.font, 75, cs.GREEN)
             else:
-                text_quit = utils.text_format("QUIT", cs.FONT_PATH, 75, cs.GREY)
+                text_quit = utils.text_format("QUIT", gr.font, 75, cs.GREY)
 
         
             title_black_rect=title_black.get_rect()
@@ -92,10 +101,12 @@ class Options_Menu(Menu):
     def options_menu(self, main_menu):   
         while self.in_menu:
             for event in pg.event.get():
-                if event.type==pg.QUIT or event.type==pg.K_ESCAPE:
+                if event.type==pg.QUIT:
+                    au.sfx["start_level"].play()
                     pg.quit()
                     quit()
                 if event.type==pg.KEYDOWN:
+                    au.sfx["menu_select"].play()
                     if event.key==pg.K_UP:
                         if self.selected > 0:
                             self.selected = self.selected - 1
@@ -108,22 +119,22 @@ class Options_Menu(Menu):
         
             # Options Menu UI
             self.screen.fill(cs.BLACK)
-            title_options=utils.text_format("OPTIONS", cs.FONT_PATH, 120, cs.GREEN)
+            title_options=utils.text_format("OPTIONS", gr.font, 120, cs.GREEN)
 
             if self.selected==self.buttons.DIFFICULTY.value:
-                text_start=utils.text_format("DIFFICULTY", cs.FONT_PATH, 75, cs.GREEN)
+                text_start=utils.text_format("DIFFICULTY", gr.font, 75, cs.GREEN)
             else:
-                text_start = utils.text_format("DIFFICULTY", cs.FONT_PATH, 75, cs.GREY)
+                text_start = utils.text_format("DIFFICULTY", gr.font, 75, cs.GREY)
 
             if self.selected==self.buttons.SOUND.value:
-                text_options=utils.text_format("SOUND", cs.FONT_PATH, 75, cs.GREEN)
+                text_options=utils.text_format("SOUND", gr.font, 75, cs.GREEN)
             else:
-                text_options = utils.text_format("SOUND", cs.FONT_PATH, 75, cs.GREY)
+                text_options = utils.text_format("SOUND", gr.font, 75, cs.GREY)
 
             if self.selected==self.buttons.BACK.value:
-                text_quit=utils.text_format("BACK", cs.FONT_PATH, 75, cs.GREEN)
+                text_quit=utils.text_format("BACK", gr.font, 75, cs.GREEN)
             else:
-                text_quit = utils.text_format("BACK", cs.FONT_PATH, 75, cs.GREY)
+                text_quit = utils.text_format("BACK", gr.font, 75, cs.GREY)
 
         
             title_options_rect=title_options.get_rect()

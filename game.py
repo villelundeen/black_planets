@@ -2,10 +2,12 @@ import os
 import pygame as pg
 from pygame.locals import *
 import numpy as np
-from pygame import mixer as mx
+from audio import audio as au
 
 import constants as cs
 import world
+
+
 
 class Game():
     def __init__(self, screen, clk, difficulty=1):
@@ -15,6 +17,9 @@ class Game():
         self.n_planet = 5
         self.n_wormhole_pairs = 1
         self.wd = world.World(self.n_planet,self.n_wormhole_pairs)
+
+    def next_level(self):
+        self.wd.update_level()
 
     def game(self):
 
@@ -40,6 +45,7 @@ class Game():
         last_tick = 0
         last_shot_tick = 0
         last_teleport_tick = 0
+        last_trace_tick = 0
         player_idx = 0
         while running:
             for event in pg.event.get():
@@ -57,7 +63,7 @@ class Game():
                             shot_vector = self.wd.ufos[player_idx].get_shot_direction() * self.wd.ufos[player_idx].get_shot_power()
                             self.wd.projectiles[player_idx].set_vel(shot_vector)
                             last_shot_tick = pg.time.get_ticks()
-                            mx.Sound(cs.LASER_SOUND_PATH).play()
+                            au.sfx["laser"].play()
                 if keys[pg.K_LEFT] or keys[pg.K_a]:
                     if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
                         last_tick = pg.time.get_ticks()
@@ -102,22 +108,31 @@ class Game():
 
             if outside_bounds or hit_planet or hit_ufo0 or hit_ufo1:
                 if outside_bounds:
-                    mx.Sound(cs.OOB_SOUND_PATH).play()
+                    au.sfx["oob"].play()
                 if hit_planet:
-                    mx.Sound(cs.PLANET_HIT_SOUND_PATH).play()
+                    au.sfx["planet_hit"].play()
                 if hit_ufo0:
                     self.wd.ufo0.lose_life()
-                    mx.Sound(cs.UFO_HIT_SOUND_PATH).play()
-                    print("UFO 0 lost a life!")
                     if self.wd.ufo0.get_life_count() <= 0:
                         print("UFO 0 ran out of lives!")
+                    au.sfx["ufo_hit"].play()
+                    print("UFO 0 lost a life!")
+                    au.sfx["start_level"].play()
+                    self.screen.fill(cs.BLACK)
+                    pg.display.update()
+                    pg.time.delay(1750)
+                    self.next_level()
                 if hit_ufo1:
                     self.wd.ufo1.lose_life()
-                    mx.Sound(cs.UFO_HIT_SOUND_PATH).play()
-                    print("UFO 1 lost a life!")
                     if self.wd.ufo1.get_life_count() <= 0:
                         print("UFO 1 ran out of lives!")
-                
+                    au.sfx["ufo_hit"].play()
+                    print("UFO 1 lost a life!")
+                    au.sfx["start_level"].play()
+                    self.screen.fill(cs.BLACK)
+                    pg.display.update()
+                    pg.time.delay(1750)
+                    self.next_level()
                 self.wd.projectiles[player_idx].stop_motion()
                 shot_moving = False
 
@@ -125,7 +140,8 @@ class Game():
                     self.wd.projectiles[player_idx].set_pos(cs.PLAYER2_POS)
                 else:
                     self.wd.projectiles[player_idx].set_pos(cs.PLAYER1_POS)
-
+                self.wd.projectiles[0].render_traces(self.screen)
+                self.wd.projectiles[1].render_traces(self.screen)
                 self.wd.projectiles[player_idx].update_motion(cs.DELTA_T, self.wd.planets)
                 self.wd.projectiles[player_idx].render(self.screen, cs.RED)
                 self.wd.ufo0.render(self.screen)
@@ -147,6 +163,11 @@ class Game():
                         last_teleport_tick = pg.time.get_ticks()
                         
                 self.wd.projectiles[player_idx].update_motion(cs.DELTA_T, self.wd.planets)
+                if pg.time.get_ticks() - last_trace_tick > cs.TRACE_DELAY:
+                    last_trace_tick = pg.time.get_ticks()
+                    self.wd.projectiles[player_idx].add_trace_point(self.wd.projectiles[player_idx].get_pos())
+                self.wd.projectiles[0].render_traces(self.screen)
+                self.wd.projectiles[1].render_traces(self.screen)
                 self.wd.projectiles[player_idx].render(self.screen, cs.RED)
                 self.wd.ufo0.render(self.screen)
                 self.wd.ufo1.render(self.screen)
@@ -159,6 +180,8 @@ class Game():
                 for wormhole_pair in self.wd.wormholes:
                     wormhole_pair[0].render(self.screen)
                     wormhole_pair[1].render(self.screen)
+                self.wd.projectiles[0].render_traces(self.screen)
+                self.wd.projectiles[1].render_traces(self.screen)
                 self.wd.projectiles[player_idx].render(self.screen, cs.RED)
                 self.wd.ufo0.render(self.screen)
                 self.wd.ufo1.render(self.screen)

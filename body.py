@@ -2,7 +2,7 @@ import numpy as np
 import pygame as pg
 import utils
 import random as rand
-from pygame import mixer as mx
+from audio import audio as au
 import constants as cs
 
 
@@ -167,11 +167,11 @@ class Moving_Body(Massive_Body, Rotating_Body):
             if dist0 <= self.rad + rad0:
                 self.set_pos(wormhole_pair[1].get_pos())
                 self.set_vel(np.dot(wormhole_pair[1].rotation_matrix, self.get_vel()))
-                mx.Sound(cs.TELEPORT_SOUND_PATH).play()
+                au.sfx["teleport"].play()
                 return True
             elif dist1 <= self.rad + rad1:
                 self.set_pos(wormhole_pair[0].get_pos())
                 self.set_vel(np.dot(wormhole_pair[0].rotation_matrix, self.get_vel()))
-                mx.Sound(cs.TELEPORT_SOUND_PATH).play()
+                au.sfx["teleport"].play()
                 return True
         return False

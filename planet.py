@@ -4,7 +4,7 @@ from body import Massive_Body
 import constants as cs
 from pygame import image as im
 from pygame import transform as tr
-from graphics import graphics_stock as gr
+from graphics import graphics as gr
 
 
 

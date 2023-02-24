@@ -7,12 +7,16 @@ import random as rand
 import numpy as np
 import utils
 
+
+
 class World():
     def __init__(self, n_planet, n_wormhole_pairs):
+        self.n_planet = n_planet
+        self.n_wormhole_pairs = n_wormhole_pairs
         self.planets = []
         self.wormholes = []
-        self.generate_planets(n_planet)
-        self.generate_wormhole_pairs(n_wormhole_pairs)
+        self.generate_planets(self.n_planet)
+        self.generate_wormhole_pairs(self.n_wormhole_pairs)
         self.projectile0 = None
         self.projectile1 = None
         self.generate_projectiles()
@@ -37,10 +41,11 @@ class World():
             del planet
 
         self.planets = []
+        self.wormholes = []
         planet_pos_and_rad = []
         wormhole_pos = []
         for wormhole in self.wormholes:
-            wormhole_pos.append(wormhole.get_pos())
+            wormhole_pos.extend(wormhole.get_pos())
         fails = 0
         max_fails = 100
         success = True
@@ -79,6 +84,7 @@ class World():
 
         if fails > max_fails:
             print("Too many tries required to create all the planets!")
+
 
     def generate_wormhole_pairs(self, n_wormhole_pairs):
         wormhole_idx = 0
@@ -153,3 +159,9 @@ class World():
         self.projectile0 = pr.Projectile(pos=cs.PLAYER1_POS)
         self.projectile1 = pr.Projectile(pos=cs.PLAYER2_POS)
 
+
+    def update_level(self):
+        self.projectile0.clear_traces()
+        self.projectile1.clear_traces()
+        self.generate_planets(self.n_planet)
+        self.generate_wormhole_pairs(self.n_wormhole_pairs)
