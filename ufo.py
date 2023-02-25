@@ -3,6 +3,7 @@ from body import Moving_Body
 import constants as cs
 from pygame import image as im
 from pygame import transform as tr
+from powerbar import Powerbar
 
 class UFO(Moving_Body):
     def __init__(self, mass=cs.UFO_MASS, \
@@ -16,6 +17,7 @@ class UFO(Moving_Body):
         self.img = im.load("./figs/ufo.png")
         self.img = tr.scale(self.img, (2*cs.UFO_RAD,2*cs.UFO_RAD))
         self.lives = lives
+        self.powerbar = Powerbar(self)
 
     def print_info(self):
         print(f"Mass: {self.mass}")
@@ -43,10 +45,12 @@ class UFO(Moving_Body):
             print("Rotation not enabled")
         
     def increase_shot_power(self):
-        self.shot_power += cs.SHOT_POWER_INCREMENT
+        if self.shot_power < cs.MAX_SHOT_POWER:
+            self.shot_power += cs.SHOT_POWER_INCREMENT
 
     def decrease_shot_power(self):
-        self.shot_power -= cs.SHOT_POWER_INCREMENT
+        if self.shot_power > cs.MIN_SHOT_POWER:
+            self.shot_power -= cs.SHOT_POWER_INCREMENT
 
     def get_shot_power(self):
         return self.shot_power

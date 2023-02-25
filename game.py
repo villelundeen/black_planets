@@ -185,6 +185,7 @@ class Game():
                 self.wd.projectiles[player_idx].render(self.screen, cs.RED)
                 self.wd.ufo0.render(self.screen)
                 self.wd.ufo1.render(self.screen)
+                self.wd.ufos[player_idx].powerbar.render(self.screen)
                 for planet in self.wd.planets:
                     planet.render(self.screen)
                 pg.display.update()

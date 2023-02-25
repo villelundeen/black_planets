@@ -153,6 +153,8 @@ class World():
     def generate_ufos(self):
         self.ufo0 = ufo.UFO(pos=cs.PLAYER1_POS)
         self.ufo1 = ufo.UFO(pos=cs.PLAYER2_POS, ang=np.pi)
+        self.ufo0.powerbar.set_pos()
+        self.ufo1.powerbar.set_pos()
 
     
     def generate_projectiles(self):
