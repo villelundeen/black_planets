@@ -10,6 +10,7 @@ def init_bp():
     pg.init()
     # Game sound effects
     au.create_sounds()
-    screen = pg.display.set_mode(cs.WINDOW_SIZE)
+    #screen = pg.display.set_mode(cs.WINDOW_SIZE)
+    screen = pg.display.set_mode((0, 0), pg.FULLSCREEN)
     clk = pg.time.Clock()
     return screen, clk

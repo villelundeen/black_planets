@@ -3,6 +3,7 @@ import pygame as pg
 from pygame.locals import *
 import numpy as np
 from audio import audio as au
+from pygame import image as im
 
 import constants as cs
 import world
@@ -10,9 +11,10 @@ import world
 
 
 class Game():
-    def __init__(self, screen, clk, difficulty=1):
+    def __init__(self, screen, clk, pause_menu, difficulty=1):
         self.screen = screen
         self.clk = clk
+        self.pause_menu = pause_menu
         self.difficulty = difficulty
         self.n_planet = 5
         self.n_wormhole_pairs = 1
@@ -50,8 +52,16 @@ class Game():
         while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
-                    running = False
-
+                    pg.quit()
+                    quit()
+                elif event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        pg.quit()
+                        quit()
+                    if event.key == pg.K_SPACE:
+                        back_to_main_menu = self.pause_menu.pause_menu()  # Go to Pause menu
+                        if back_to_main_menu:
+                            running = False
             if inside_bounds:
                 keys = pg.key.get_pressed()
                 if keys[pg.K_RETURN]:
@@ -191,6 +201,3 @@ class Game():
                 pg.display.update()
             
             self.clk.tick(cs.FPS)
-
-        pg.quit()
-        quit()

@@ -25,8 +25,8 @@ class Powerbar():
     def render(self, screen):
         pg.draw.rect(screen, cs.GREY, self.border_rect, cs.POWER_BAR_BORDER_THICKNESS)
         self.power_size = np.array([((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) * 100, cs.POWER_BAR_H])
-        self.power_rect = pg.Rect(self.pos + cs.POWER_BAR_BORDER_THICKNESS, self.power_size)
+        self.power_rect = pg.Rect(self.pos, self.power_size)
         pg.draw.rect(screen, cs.GREEN, self.power_rect)
-        num = (((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) - 0.5) * 10
-        num_text = utils.text_format(f"{num}", gr.font, cs.POWER_BAR_H, cs.GREEN)
+        num = str(round((((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) - 0.5) * 20))
+        num_text = utils.text_format(num, gr.number_font, cs.POWER_BAR_BORDER_H, cs.GREEN)
         screen.blit(num_text, tuple(self.pos + np.array([cs.POWER_BAR_BORDER_W + 5, 0.0])))

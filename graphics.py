@@ -12,7 +12,10 @@ class Graphics():
                 self.planet_imgs.append(img)
         self.ufo_imgs = []
         self.projectile_imgs = []
-        self.font = "./fonts/Freedom-10eM.ttf"
+        self.main_menu_bg = im.load("./figs/main_menu_bg.png")
+        self.menu_font = "./fonts/Freedom-10eM.ttf"
+        self.number_font = "./fonts/Nasa21-l23X.ttf"
+
 
 
 graphics = Graphics()

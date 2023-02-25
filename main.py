@@ -1,6 +1,6 @@
 from game import Game
 import init
-from menu import Main_Menu, Options_Menu
+from menu import Main_Menu, Options_Menu, Pause_Menu
 
 
 """
@@ -34,7 +34,9 @@ def main():
 
     screen, clk = init.init_bp()
     
-    game = Game(screen, clk)
+    pause_menu = Pause_Menu(screen, clk)
+    game = Game(screen, clk, pause_menu)
+
 
     options_menu = Options_Menu(screen, clk)
     main_menu = Main_Menu(screen, clk, game, options_menu)
