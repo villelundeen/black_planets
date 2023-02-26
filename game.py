@@ -199,9 +199,10 @@ class Game():
                 self.wd.projectiles[0].render_traces(self.screen)
                 self.wd.projectiles[1].render_traces(self.screen)
                 self.wd.projectiles[player_idx].render(self.screen, cs.RED)
+                self.wd.ufos[player_idx].powerbar.render(self.screen)
+                self.wd.ufos[player_idx].crosshair.render(self.screen)
                 self.wd.ufo0.render(self.screen)
                 self.wd.ufo1.render(self.screen)
-                self.wd.ufos[player_idx].powerbar.render(self.screen)
                 for planet in self.wd.planets:
                     planet.render(self.screen)
                 pg.display.update()

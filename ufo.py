@@ -4,6 +4,8 @@ import constants as cs
 from pygame import image as im
 from pygame import transform as tr
 from powerbar import Powerbar
+from crosshair import Crosshair
+
 
 class UFO(Moving_Body):
     def __init__(self, mass=cs.UFO_MASS, \
@@ -18,6 +20,7 @@ class UFO(Moving_Body):
         self.img = tr.scale(self.img, (2*cs.UFO_RAD,2*cs.UFO_RAD))
         self.lives = lives
         self.powerbar = Powerbar(self)
+        self.crosshair = Crosshair(self)
 
     def print_info(self):
         print(f"Mass: {self.mass}")
