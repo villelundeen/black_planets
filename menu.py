@@ -50,8 +50,10 @@ class Main_Menu(Menu):
                             pg.display.update()
                             pg.time.delay(1750)
                             self.game.game()
+                            self.screen.fill(cs.BLACK)
                             bg = im.load("./figs/main_menu_cropped3.png")
                             self.screen.blit(bg, (0,0))
+                            self.in_menu = False
 
                         if self.selected==self.buttons.OPTIONS.value:
                             self.options_menu.options_menu(self)
@@ -99,6 +101,8 @@ class Main_Menu(Menu):
             pg.display.update()
             pg.display.set_caption("Black Planets - Main Menu")
             self.clk.tick(cs.FPS)
+
+        self.in_menu = True
 
 
 
@@ -162,6 +166,8 @@ class Options_Menu(Menu):
             self.clk.tick(cs.FPS)
             pg.display.set_caption("Black Planets - Options Menu")
 
+        self.in_menu = True
+
 
 
 class Pause_Menu(Menu):
@@ -221,5 +227,6 @@ class Pause_Menu(Menu):
             self.clk.tick(cs.FPS)
             pg.display.set_caption("Black Planets - Options Menu")
 
+        self.in_menu = True
         return back_to_main_menu
     

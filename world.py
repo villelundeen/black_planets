@@ -170,6 +170,10 @@ class World():
 
 
     def update_level(self):
+        self.ufo0.shot_power = (cs.MIN_SHOT_POWER + cs.MAX_SHOT_POWER)/2
+        self.ufo1.shot_power = (cs.MIN_SHOT_POWER + cs.MAX_SHOT_POWER)/2
+        self.ufo0.ang = 0
+        self.ufo1.ang = np.pi
         self.projectile0.clear_traces()
         self.projectile1.clear_traces()
         self.generate_planets(self.n_planet)

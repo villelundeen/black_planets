@@ -48,6 +48,7 @@ class Game():
         last_shot_tick = 0
         last_teleport_tick = 0
         last_trace_tick = 0
+        back_from_menu_tick = 0
         player_idx = 0
         while running:
             for event in pg.event.get():
@@ -61,13 +62,15 @@ class Game():
                     if event.key == pg.K_SPACE:
                         print("Went to pause menu")
                         back_to_main_menu = self.pause_menu.pause_menu()  # Go to Pause menu
+                        back_from_menu_tick = pg.time.get_ticks()
                         if back_to_main_menu:
                             running = False
+                            break
             if inside_bounds:
                 keys = pg.key.get_pressed()
                 if keys[pg.K_RETURN]:
                     if shot_moving == False:
-                        if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY:
+                        if pg.time.get_ticks() - last_tick > cs.MIN_KEY_PRESS_DELAY and pg.time.get_ticks() - back_from_menu_tick > cs.MIN_KEY_PRESS_DELAY:
                             last_tick = pg.time.get_ticks()
                             shot_moving = True
                             self.wd.projectiles[player_idx].enable_motion()
@@ -128,6 +131,7 @@ class Game():
                         print("UFO 0 ran out of lives!")
                     au.sfx["ufo_hit"].play()
                     print("UFO 0 lost a life!")
+                    print(f"{self.wd.ufo0.get_life_count()}")
                     au.sfx["start_level"].play()
                     self.screen.fill(cs.BLACK)
                     pg.display.update()
@@ -139,6 +143,7 @@ class Game():
                         print("UFO 1 ran out of lives!")
                     au.sfx["ufo_hit"].play()
                     print("UFO 1 lost a life!")
+                    print(f"{self.wd.ufo1.get_life_count()}")
                     au.sfx["start_level"].play()
                     self.screen.fill(cs.BLACK)
                     pg.display.update()

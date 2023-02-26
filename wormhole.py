@@ -30,7 +30,7 @@ class Wormhole(Rotating_Body):
         screen.blit(rot_img, new_rect)
 
     def convert_img(self):
-        self.img = self.img.convert()
+        self.img = self.img#.convert()
 
         """
         # This own rotation is not working for some reason.
