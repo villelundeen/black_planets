@@ -66,4 +66,5 @@ class UFO(Moving_Body):
     def lose_life(self):
         self.lives -= 1
 
-    
+    def convert_img(self):
+        self.img = self.img.convert()

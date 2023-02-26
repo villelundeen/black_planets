@@ -59,6 +59,7 @@ class Game():
                         pg.quit()
                         quit()
                     if event.key == pg.K_SPACE:
+                        print("Went to pause menu")
                         back_to_main_menu = self.pause_menu.pause_menu()  # Go to Pause menu
                         if back_to_main_menu:
                             running = False
@@ -108,7 +109,7 @@ class Game():
                             self.wd.projectiles[player_idx].get_pos()[1] < -0.2*cs.WINDOW_H or \
                             self.wd.projectiles[player_idx].get_pos()[1] > 1.2*cs.WINDOW_H
             hit_planet = self.wd.projectiles[player_idx].too_close_to_planet(self.wd.planets, min_dist=0)
-            #hit_wormhole = self.wd.projectiles[player_idx].too_close_to_wormhole(self.wd.wormholes, min_dist=0)
+            
             if (pg.time.get_ticks() - last_shot_tick > cs.HIT_ACTIVATION_DELAY) and shot_moving:
                 hit_ufo0 = self.wd.projectiles[player_idx].hit_ufo(self.wd.ufo0)
                 hit_ufo1 = self.wd.projectiles[player_idx].hit_ufo(self.wd.ufo1)

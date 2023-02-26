@@ -77,7 +77,9 @@ class World():
             if success:
                 planet_pos_and_rad.append(((np.array([rand_x, rand_y])), rand_rad))
                 rand_mass = (4/3*np.pi*rand_rad*rand_rad*rand_rad) * cs.PLANET_DENSITY
-                self.planets.append(pl.Planet(mass=rand_mass, rad=rand_rad, pos=np.array([rand_x,rand_y]))) 
+                new_planet = pl.Planet(mass=rand_mass, rad=rand_rad, pos=np.array([rand_x,rand_y]))
+                new_planet.convert_img()
+                self.planets.append(new_planet) 
             else:
                 success = True
             
@@ -131,6 +133,7 @@ class World():
                 wormhole_idx = (wormhole_idx + 1) % 2
                 wormhole_pos.append((np.array([rand_x, rand_y])))
                 current_pair[wormhole_idx] = wh.Wormhole(rad=irad, pos=np.array([rand_x,rand_y]))
+                current_pair[wormhole_idx].convert_img()
                 if wormhole_idx == 0:
                     self.wormholes.append(current_pair.copy()) 
                     current_pair[0] = None
@@ -155,11 +158,15 @@ class World():
         self.ufo1 = ufo.UFO(pos=cs.PLAYER2_POS, ang=np.pi)
         self.ufo0.powerbar.set_pos()
         self.ufo1.powerbar.set_pos()
+        self.ufo0.convert_img()
+        self.ufo1.convert_img()
 
     
     def generate_projectiles(self):
         self.projectile0 = pr.Projectile(pos=cs.PLAYER1_POS)
         self.projectile1 = pr.Projectile(pos=cs.PLAYER2_POS)
+        #self.projectile0.convert_img()
+        #self.projectile0.convert_img()
 
 
     def update_level(self):

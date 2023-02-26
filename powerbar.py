@@ -13,7 +13,7 @@ class Powerbar():
         self.bar_size = np.array([cs.POWER_BAR_W, cs.POWER_BAR_H])
         self.power_size = np.array([((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) * 100, cs.POWER_BAR_H])
         self.border_rect = pg.Rect(self.pos, self.border_size)
-        self.power_rect = pg.Rect(self.pos + cs.POWER_BAR_BORDER_THICKNESS, self.power_size)
+        self.power_rect = pg.Rect(self.pos + np.array([cs.POWER_BAR_BORDER_THICKNESS, cs.POWER_BAR_BORDER_THICKNESS]), self.power_size)
     
     def set_pos(self):
         if self.ufo.get_pos()[0] < cs.WINDOW_W/2:
@@ -25,8 +25,13 @@ class Powerbar():
     def render(self, screen):
         pg.draw.rect(screen, cs.GREY, self.border_rect, cs.POWER_BAR_BORDER_THICKNESS)
         self.power_size = np.array([((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) * 100, cs.POWER_BAR_H])
-        self.power_rect = pg.Rect(self.pos, self.power_size)
+        self.power_rect = pg.Rect(self.pos + np.array([cs.POWER_BAR_BORDER_THICKNESS, cs.POWER_BAR_BORDER_THICKNESS]), self.power_size)
         pg.draw.rect(screen, cs.GREEN, self.power_rect)
         num = str(round((((self.ufo.get_shot_power() - cs.MIN_SHOT_POWER) / (cs.MAX_SHOT_POWER - cs.MIN_SHOT_POWER)) - 0.5) * 20))
         num_text = utils.text_format(num, gr.number_font, cs.POWER_BAR_BORDER_H, cs.GREEN)
-        screen.blit(num_text, tuple(self.pos + np.array([cs.POWER_BAR_BORDER_W + 5, 0.0])))
+
+        if self.ufo.get_pos()[0] < cs.WINDOW_W/2:
+            screen.blit(num_text, tuple(self.pos + np.array([cs.POWER_BAR_BORDER_W + 5, 0.0])))
+        else:
+            num_rect = num_text.get_rect()
+            screen.blit(num_text, tuple(self.pos - np.array([num_rect[2] + 5, 0.0])))

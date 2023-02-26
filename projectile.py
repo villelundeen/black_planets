@@ -39,3 +39,6 @@ class Projectile(Moving_Body):
     def render_traces(self, screen):
         for point in self.trace_points:
             pg.draw.circle(screen, cs.TRACE_COLOR, point, cs.TRACE_WIDTH)
+
+    #def convert_img(self):
+    #    self.img = self.img.convert()

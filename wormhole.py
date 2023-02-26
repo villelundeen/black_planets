@@ -29,6 +29,9 @@ class Wormhole(Rotating_Body):
         new_rect = rot_img.get_rect(center = self.img.get_rect(topleft = self.get_pos() - np.array([cs.WORMHOLE_OUTER_RAD, cs.WORMHOLE_OUTER_RAD])).center)
         screen.blit(rot_img, new_rect)
 
+    def convert_img(self):
+        self.img = self.img.convert()
+
         """
         # This own rotation is not working for some reason.
         rot_img = tr.rotate(self.img, 180*self.img_ang/np.pi)

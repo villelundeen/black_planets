@@ -7,6 +7,7 @@ from audio import audio as au
 def init_bp():
     # Let's get to it
     print("Welcome to Black Planets Construction Site!")
+    # TODO: Clean up previous stuff if needed
     pg.init()
     # Game sound effects
     au.create_sounds()

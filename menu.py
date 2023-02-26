@@ -26,7 +26,7 @@ class Main_Menu(Menu):
         self.difficulty = 1
 
     def main_menu(self):
-        bg = im.load("./figs/main_menu_cropped3.png")
+        bg = im.load("./figs/main_menu_cropped3.png").convert()
         self.screen.blit(bg, (0,0))
         #pg.display.update()
         while self.in_menu:

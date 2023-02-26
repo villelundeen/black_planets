@@ -23,3 +23,6 @@ class Planet(Massive_Body):
 
     def render(self, screen):
         screen.blit(self.img, tuple(self.pos - np.array([self.rad, self.rad])))
+
+    def convert_img(self):
+        self.img = self.img.convert()
